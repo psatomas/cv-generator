@@ -74,14 +74,14 @@ export function parseEvidenceRequirementMatch(input: unknown): EvidenceRequireme
         requirementId,
         explanation,
         outcome,
-        evidenceIds: evidenceIds as [EvidenceId, ...EvidenceId[]],
+        evidenceIds: Object.freeze([...evidenceIds]) as readonly [EvidenceId, ...EvidenceId[]],
       };
     case "unsupported":
       if (evidenceIds.length !== 0) {
         invalid("unsupported matches must not reference evidence ids");
       }
 
-      return { id, requirementId, explanation, outcome, evidenceIds: [] };
+      return { id, requirementId, explanation, outcome, evidenceIds: Object.freeze([]) as readonly [] };
     default:
       invalid(`outcome must be one of: ${evidenceRequirementMatchOutcomes.join(", ")}`);
   }

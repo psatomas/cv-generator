@@ -43,6 +43,18 @@ test("parses every supported match outcome", () => {
   }
 });
 
+test("freezes parsed evidence references at runtime", () => {
+  for (const match of validMatches) {
+    const parsed = parseEvidenceRequirementMatch(match);
+
+    assert.throws(
+      () => (parsed.evidenceIds as unknown as string[]).push("evidence_changed_externally"),
+      TypeError,
+    );
+    assert.deepEqual(parsed.evidenceIds, match.evidenceIds);
+  }
+});
+
 test("rejects invalid match and requirement identifiers", () => {
   assert.throws(
     () => parseEvidenceRequirementMatch({ ...validMatches[0], id: "typescript_supported" }),
