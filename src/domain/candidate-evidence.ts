@@ -90,12 +90,12 @@ export type CandidateEvidence =
   | AchievementEvidence;
 
 export class CandidateEvidenceValidationError extends Error {
-  public readonly issues: readonly string[];
+  public readonly issue: string;
 
-  constructor(issues: readonly string[]) {
-    super(`Invalid candidate evidence: ${issues.join("; ")}`);
+  constructor(issue: string) {
+    super(`Invalid candidate evidence: ${issue}`);
     this.name = "CandidateEvidenceValidationError";
-    this.issues = issues;
+    this.issue = issue;
   }
 }
 
@@ -117,29 +117,41 @@ export function parseCandidateEvidence(input: unknown): CandidateEvidence {
   const type = text(evidence.type, "type") as EvidenceType;
 
   switch (type) {
-    case "professional-experience":
+    case "professional-experience": {
+      const startDate = month(evidence.startDate, "startDate");
+      const endDate = optionalMonth(evidence.endDate, "endDate");
+      ensureEndDateIsNotEarlier(startDate, endDate);
+
       return {
         id,
         type,
         provenance,
         employer: text(evidence.employer, "employer"),
         role: text(evidence.role, "role"),
-        startDate: month(evidence.startDate, "startDate"),
-        endDate: optionalMonth(evidence.endDate, "endDate"),
+        startDate,
+        endDate,
         highlights: textList(evidence.highlights, "highlights", true),
       };
-    case "project":
+    }
+    case "project": {
+      const startDate = optionalMonth(evidence.startDate, "startDate");
+      const endDate = optionalMonth(evidence.endDate, "endDate");
+      if (startDate !== undefined) {
+        ensureEndDateIsNotEarlier(startDate, endDate);
+      }
+
       return {
         id,
         type,
         provenance,
         name: text(evidence.name, "name"),
         role: optionalText(evidence.role, "role"),
-        startDate: optionalMonth(evidence.startDate, "startDate"),
-        endDate: optionalMonth(evidence.endDate, "endDate"),
+        startDate,
+        endDate,
         technologies: textList(evidence.technologies, "technologies"),
         highlights: textList(evidence.highlights, "highlights", true),
       };
+    }
     case "education":
       return {
         id,
@@ -263,6 +275,12 @@ function optionalMonth(value: unknown, field: string): string | undefined {
   return value === undefined ? undefined : month(value, field);
 }
 
+function ensureEndDateIsNotEarlier(startDate: string, endDate: string | undefined): void {
+  if (endDate !== undefined && endDate < startDate) {
+    invalid("endDate must not be earlier than startDate");
+  }
+}
+
 function date(value: unknown, field: string): string {
   const result = text(value, field);
   const match = datePattern.exec(result);
@@ -306,5 +324,5 @@ function optionalUrl(value: unknown, field: string): string | undefined {
 }
 
 function invalid(issue: string): never {
-  throw new CandidateEvidenceValidationError([issue]);
+  throw new CandidateEvidenceValidationError(issue);
 }

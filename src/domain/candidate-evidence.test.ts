@@ -84,7 +84,7 @@ test("rejects an invalid stable identifier", () => {
     () => parseCandidateEvidence(invalid),
     (error: unknown) =>
       error instanceof CandidateEvidenceValidationError &&
-      error.issues.includes("id must use the evidence_<lowercase-identifier> format"),
+      error.issue === "id must use the evidence_<lowercase-identifier> format",
   );
 });
 
@@ -94,6 +94,28 @@ test("rejects missing factual fields", () => {
   assert.throws(
     () => parseCandidateEvidence(invalid),
     CandidateEvidenceValidationError,
+  );
+});
+
+test("rejects professional experience that ends before it starts", () => {
+  const invalid = { ...validEvidence[0], endDate: "2021-12" };
+
+  assert.throws(
+    () => parseCandidateEvidence(invalid),
+    (error: unknown) =>
+      error instanceof CandidateEvidenceValidationError &&
+      error.issue === "endDate must not be earlier than startDate",
+  );
+});
+
+test("rejects projects that end before they start", () => {
+  const invalid = { ...validEvidence[1], startDate: "2024-01", endDate: "2023-12" };
+
+  assert.throws(
+    () => parseCandidateEvidence(invalid),
+    (error: unknown) =>
+      error instanceof CandidateEvidenceValidationError &&
+      error.issue === "endDate must not be earlier than startDate",
   );
 });
 
