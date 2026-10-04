@@ -51,7 +51,6 @@ export type CertificationJobRequirement = JobRequirementBase & {
 
 export type ResponsibilityJobRequirement = JobRequirementBase & {
   type: "responsibility";
-  statement: string;
 };
 
 export type DomainKnowledgeJobRequirement = JobRequirementBase & {
@@ -119,7 +118,7 @@ export function parseJobRequirement(input: unknown): JobRequirement {
     case "certification":
       return { ...base, type, name: text(requirement.name, "name") };
     case "responsibility":
-      return { ...base, type, statement: text(requirement.statement, "statement") };
+      return { ...base, type };
     case "domain-knowledge":
       return { ...base, type, topic: text(requirement.topic, "topic") };
     case "language":

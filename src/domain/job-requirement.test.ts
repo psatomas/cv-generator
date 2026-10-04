@@ -47,7 +47,6 @@ const validRequirements: readonly JobRequirement[] = [
     id: "requirement_responsibility_delivery",
     type: "responsibility",
     text: "Lead delivery of product features",
-    statement: "Lead delivery of product features",
   },
   {
     ...common,
