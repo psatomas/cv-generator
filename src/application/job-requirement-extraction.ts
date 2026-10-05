@@ -124,7 +124,7 @@ async function invokeExtractor(
 }
 
 function parseExtractedRequirement(input: unknown, index: number): JobRequirement {
-  const candidate = asRecord(input);
+  const candidate = canonicalizeNullableOptionalFields(asRecord(input));
   const id = createRequirementId(candidate.type, index);
 
   try {
@@ -136,6 +136,24 @@ function parseExtractedRequirement(input: unknown, index: number): JobRequiremen
 
     throw error;
   }
+}
+
+/**
+ * Strict structured-output schemas represent domain-optional fields as null.
+ * This provider-neutral canonicalization converts that transport convention to
+ * the domain parser's omitted-field convention without validating the values.
+ */
+function canonicalizeNullableOptionalFields(
+  candidate: Record<string, unknown>,
+): Record<string, unknown> {
+  const canonical = { ...candidate };
+  for (const field of ["minimumYears", "proficiency", "location", "arrangement"]) {
+    if (canonical[field] === null) {
+      delete canonical[field];
+    }
+  }
+
+  return canonical;
 }
 
 function asRecord(input: unknown): Record<string, unknown> {

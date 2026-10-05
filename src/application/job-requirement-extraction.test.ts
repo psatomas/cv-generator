@@ -107,6 +107,41 @@ test("produces equivalent canonical output for equivalent ordered extraction", a
   assert.deepEqual(first.requirements.all(), second.requirements.all());
 });
 
+test("canonicalizes nullable optional fields before domain parsing", async () => {
+  const extractor = new FakeExtractor([
+    { ...candidates[1], minimumYears: null },
+    { ...candidates[6], proficiency: null },
+    { ...candidates[7], location: null },
+    { ...candidates[7], arrangement: null },
+  ]);
+
+  const result = await extractJobRequirements({
+    jobDescription: { text: "Role" },
+    extractor,
+  });
+  const [experience, language, remote, location] = result.requirements.all();
+
+  assert.equal(experience.type, "experience");
+  assert.equal(experience.minimumYears, undefined);
+  assert.equal(language.type, "language");
+  assert.equal(language.proficiency, undefined);
+  assert.equal(remote.type, "location-work-arrangement");
+  assert.equal(remote.location, undefined);
+  assert.equal(location.type, "location-work-arrangement");
+  assert.equal(location.arrangement, undefined);
+});
+
+test("keeps non-optional nullable fields subject to domain validation", async () => {
+  const extractor = new FakeExtractor([{ ...candidates[0], name: null }]);
+
+  await assert.rejects(
+    () => extractJobRequirements({ jobDescription: { text: "Role" }, extractor }),
+    (error: unknown) =>
+      error instanceof InvalidExtractedJobRequirementError &&
+      error.issue === "name must be a non-empty string",
+  );
+});
+
 test("rejects empty source text before invoking the extractor", async () => {
   const extractor = new FakeExtractor(candidates);
 
