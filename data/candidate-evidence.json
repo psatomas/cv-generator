@@ -18,7 +18,7 @@
     "type": "skill",
     "provenance": { "kind": "candidate-statement", "statement": "Candidate confirmed practical EVM and Ethereum development experience.", "recordedOn": "2026-10-05" },
     "name": "EVM / Ethereum",
-    "level": "advanced"
+    "level": "working"
   },
   {
     "id": "evidence_skill_foundry",
@@ -53,7 +53,7 @@
     "type": "skill",
     "provenance": { "kind": "candidate-statement", "statement": "Candidate confirmed practical smart contract testing experience.", "recordedOn": "2026-10-05" },
     "name": "Smart contract testing",
-    "level": "advanced"
+    "level": "working"
   },
   {
     "id": "evidence_skill_protocol_engineering",
@@ -129,7 +129,7 @@
     "name": "StakeVerse",
     "technologies": ["Solidity", "React", "Vite", "Foundry"],
     "highlights": [
-      "Implemented DAO staking and oracle integration features.",
+      "Implemented ERC20Votes governance, staking, and Chainlink oracle integration.",
       "Implemented ERC20Votes governance with historical voting and snapshot behavior."
     ]
   },
@@ -138,7 +138,7 @@
     "type": "project",
     "provenance": { "kind": "candidate-statement", "statement": "Candidate confirmed the implementation details for the ProvenanceRegistry project.", "recordedOn": "2026-10-05" },
     "name": "ProvenanceRegistry",
-    "technologies": ["EVM / Ethereum"],
+    "technologies": ["Solidity", "EVM / Ethereum"],
     "highlights": [
       "Implemented an append-only attestation and provenance registry with owner-gated registration and timestamps.",
       "Implemented document-hash and commit-hash verification."
@@ -149,10 +149,10 @@
     "type": "project",
     "provenance": { "kind": "candidate-statement", "statement": "Candidate confirmed the implemented AI Engine project capabilities.", "recordedOn": "2026-10-05" },
     "name": "AI Engine",
-    "technologies": ["Claude", "Codex"],
+    "technologies": ["Claude Code", "Codex CLI"],
     "highlights": [
-      "Implemented a local AI orchestration runtime for Claude and Codex workflows.",
-      "Implemented persistent state and verification and security capabilities."
+      "Implemented a local AI orchestration runtime for Claude Code and Codex CLI workflows.",
+      "Implemented persistent state, verification, execution safety controls, and a CLI."
     ]
   },
   {
@@ -179,7 +179,7 @@
     "type": "education",
     "provenance": { "kind": "candidate-statement", "statement": "Candidate confirmed active participation in the iRede Web 3.0 residency allocated to Instituto Atlântico.", "recordedOn": "2026-10-05" },
     "institution": "iRede",
-    "qualification": "Residência TIC 29 Web 3.0 (in progress)",
+    "qualification": "Residência TIC 29 — Web 3.0 residency program (in progress)",
     "fieldOfStudy": "Web 3.0"
   },
   {
