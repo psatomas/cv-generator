@@ -8,12 +8,14 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "test": "node --test src/domain/*.test.ts src/application/*.test.ts src/infrastructure/*.test.ts"
+    "test": "node --test src/domain/*.test.ts src/application/*.test.ts src/infrastructure/*.test.ts",
+    "test:pdf-integration": "node --test src/infrastructure/one-page-cv-pdf-exporter.integration.ts"
   },
   "dependencies": {
     "better-sqlite3": "^13.0.3",
     "next": "16.3.8",
     "openai": "^7.28.0",
+    "playwright": "^1.63.0",
     "react": "19.2.8",
     "react-dom": "19.2.8"
   },
