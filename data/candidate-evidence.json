@@ -1,0 +1,193 @@
+[
+  {
+    "id": "evidence_skill_solidity",
+    "type": "skill",
+    "provenance": { "kind": "candidate-statement", "statement": "Candidate confirmed practical Solidity development experience.", "recordedOn": "2026-10-05" },
+    "name": "Solidity",
+    "level": "advanced"
+  },
+  {
+    "id": "evidence_skill_typescript",
+    "type": "skill",
+    "provenance": { "kind": "candidate-statement", "statement": "Candidate confirmed practical TypeScript development experience.", "recordedOn": "2026-10-05" },
+    "name": "TypeScript",
+    "level": "advanced"
+  },
+  {
+    "id": "evidence_skill_evm_ethereum",
+    "type": "skill",
+    "provenance": { "kind": "candidate-statement", "statement": "Candidate confirmed practical EVM and Ethereum development experience.", "recordedOn": "2026-10-05" },
+    "name": "EVM / Ethereum",
+    "level": "working"
+  },
+  {
+    "id": "evidence_skill_foundry",
+    "type": "skill",
+    "provenance": { "kind": "candidate-statement", "statement": "Candidate confirmed practical Foundry usage for smart contract development and testing.", "recordedOn": "2026-10-05" },
+    "name": "Foundry",
+    "level": "advanced"
+  },
+  {
+    "id": "evidence_skill_hardhat",
+    "type": "skill",
+    "provenance": { "kind": "candidate-statement", "statement": "Candidate confirmed practical Hardhat usage.", "recordedOn": "2026-10-05" },
+    "name": "Hardhat",
+    "level": "working"
+  },
+  {
+    "id": "evidence_skill_viem",
+    "type": "skill",
+    "provenance": { "kind": "candidate-statement", "statement": "Candidate confirmed practical viem usage.", "recordedOn": "2026-10-05" },
+    "name": "viem",
+    "level": "working"
+  },
+  {
+    "id": "evidence_skill_ethers",
+    "type": "skill",
+    "provenance": { "kind": "candidate-statement", "statement": "Candidate confirmed practical ethers usage.", "recordedOn": "2026-10-05" },
+    "name": "ethers",
+    "level": "working"
+  },
+  {
+    "id": "evidence_skill_smart_contract_testing",
+    "type": "skill",
+    "provenance": { "kind": "candidate-statement", "statement": "Candidate confirmed practical smart contract testing experience.", "recordedOn": "2026-10-05" },
+    "name": "Smart contract testing",
+    "level": "working"
+  },
+  {
+    "id": "evidence_skill_protocol_engineering",
+    "type": "skill",
+    "provenance": { "kind": "candidate-statement", "statement": "Candidate confirmed practical protocol engineering experience.", "recordedOn": "2026-10-05" },
+    "name": "Protocol engineering",
+    "level": "working"
+  },
+  {
+    "id": "evidence_skill_nextjs",
+    "type": "skill",
+    "provenance": { "kind": "candidate-statement", "statement": "Candidate confirmed practical Next.js development experience.", "recordedOn": "2026-10-05" },
+    "name": "Next.js",
+    "level": "working"
+  },
+  {
+    "id": "evidence_skill_react",
+    "type": "skill",
+    "provenance": { "kind": "candidate-statement", "statement": "Candidate confirmed practical React development experience.", "recordedOn": "2026-10-05" },
+    "name": "React",
+    "level": "working"
+  },
+  {
+    "id": "evidence_skill_git_github",
+    "type": "skill",
+    "provenance": { "kind": "candidate-statement", "statement": "Candidate confirmed practical Git and GitHub usage.", "recordedOn": "2026-10-05" },
+    "name": "Git / GitHub",
+    "level": "working"
+  },
+  {
+    "id": "evidence_skill_python",
+    "type": "skill",
+    "provenance": { "kind": "candidate-statement", "statement": "Candidate confirmed practical Python development experience.", "recordedOn": "2026-10-05" },
+    "name": "Python",
+    "level": "working"
+  },
+  {
+    "id": "evidence_skill_django",
+    "type": "skill",
+    "provenance": { "kind": "candidate-statement", "statement": "Candidate confirmed practical Django development experience.", "recordedOn": "2026-10-05" },
+    "name": "Django",
+    "level": "working"
+  },
+  {
+    "id": "evidence_skill_postgresql",
+    "type": "skill",
+    "provenance": { "kind": "candidate-statement", "statement": "Candidate confirmed practical PostgreSQL usage.", "recordedOn": "2026-10-05" },
+    "name": "PostgreSQL",
+    "level": "working"
+  },
+  {
+    "id": "evidence_skill_rest_apis",
+    "type": "skill",
+    "provenance": { "kind": "candidate-statement", "statement": "Candidate confirmed practical REST API development experience.", "recordedOn": "2026-10-05" },
+    "name": "REST APIs",
+    "level": "working"
+  },
+  {
+    "id": "evidence_project_exekpro",
+    "type": "project",
+    "provenance": { "kind": "candidate-statement", "statement": "Candidate confirmed the implementation details for the ExeKPro project.", "recordedOn": "2026-10-05" },
+    "name": "ExeKPro",
+    "technologies": ["Solidity", "TypeScript", "Foundry", "viem"],
+    "highlights": [
+      "Implemented an execution-selection protocol with ExecutionEngine, IntentRegistry, and ModuleRegistry components.",
+      "Implemented deterministic scoring across modular execution strategies."
+    ]
+  },
+  {
+    "id": "evidence_project_stakeverse",
+    "type": "project",
+    "provenance": { "kind": "candidate-statement", "statement": "Candidate confirmed the implementation details for the StakeVerse project.", "recordedOn": "2026-10-05" },
+    "name": "StakeVerse",
+    "technologies": ["Solidity", "React", "Vite", "Foundry"],
+    "highlights": [
+      "Implemented ERC20Votes governance, staking, and Chainlink oracle integration.",
+      "Implemented ERC20Votes governance with historical voting and snapshot behavior."
+    ]
+  },
+  {
+    "id": "evidence_project_provenance_registry",
+    "type": "project",
+    "provenance": { "kind": "candidate-statement", "statement": "Candidate confirmed the implementation details for the ProvenanceRegistry project.", "recordedOn": "2026-10-05" },
+    "name": "ProvenanceRegistry",
+    "technologies": ["Solidity", "EVM / Ethereum"],
+    "highlights": [
+      "Implemented an append-only attestation and provenance registry with owner-gated registration and timestamps.",
+      "Implemented document-hash and commit-hash verification."
+    ]
+  },
+  {
+    "id": "evidence_project_ai_engine",
+    "type": "project",
+    "provenance": { "kind": "candidate-statement", "statement": "Candidate confirmed the implemented AI Engine project capabilities.", "recordedOn": "2026-10-05" },
+    "name": "AI Engine",
+    "technologies": ["Claude Code", "Codex CLI"],
+    "highlights": [
+      "Implemented a local AI orchestration runtime for Claude Code and Codex CLI workflows.",
+      "Implemented persistent state, verification, execution safety controls, and a CLI."
+    ]
+  },
+  {
+    "id": "evidence_project_psatomas_com",
+    "type": "project",
+    "provenance": { "kind": "candidate-statement", "statement": "Candidate confirmed the implementation details for the psatomas.com personal portfolio.", "recordedOn": "2026-10-05" },
+    "name": "psatomas.com",
+    "technologies": ["Next.js", "Cloudflare Workers", "OpenNext"],
+    "highlights": [
+      "Implemented a personal portfolio with MAP, RESEARCH, LAB, and SYSTEMS sections.",
+      "Implemented deployment using Cloudflare Workers and OpenNext."
+    ]
+  },
+  {
+    "id": "evidence_education_unyleya_blockchain",
+    "type": "education",
+    "provenance": { "kind": "candidate-statement", "statement": "Candidate confirmed enrollment in the Unyleya postgraduate blockchain program.", "recordedOn": "2026-10-05" },
+    "institution": "Unyleya",
+    "qualification": "Postgraduate Program in Blockchain Development (in progress)",
+    "fieldOfStudy": "Blockchain Development"
+  },
+  {
+    "id": "evidence_education_irede_web3_residency",
+    "type": "education",
+    "provenance": { "kind": "candidate-statement", "statement": "Candidate confirmed active participation in the iRede Web 3.0 residency allocated to Instituto Atlântico.", "recordedOn": "2026-10-05" },
+    "institution": "iRede",
+    "qualification": "Residência TIC 29 — Web 3.0 residency program (in progress)",
+    "fieldOfStudy": "Web 3.0"
+  },
+  {
+    "id": "evidence_education_nicosia_digital_currency",
+    "type": "education",
+    "provenance": { "kind": "candidate-statement", "statement": "Candidate confirmed enrollment in the University of Nicosia digital currency and blockchain course.", "recordedOn": "2026-10-05" },
+    "institution": "University of Nicosia",
+    "qualification": "Digital Currency / Blockchain and Digital Assets (in progress)",
+    "fieldOfStudy": "Digital Currency and Blockchain"
+  }
+]
