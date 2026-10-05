@@ -90,7 +90,7 @@ export class OpenAIJobRequirementExtractor implements JobRequirementExtractor {
       );
     }
 
-    return payload.requirements.map(removeOptionalNulls);
+    return payload.requirements;
   }
 }
 
@@ -146,21 +146,6 @@ function isRequirementEnvelope(value: unknown): value is { requirements: unknown
     "requirements" in value &&
     Array.isArray(value.requirements)
   );
-}
-
-function removeOptionalNulls(candidate: unknown): unknown {
-  if (typeof candidate !== "object" || candidate === null || Array.isArray(candidate)) {
-    return candidate;
-  }
-
-  const normalized = { ...candidate } as Record<string, unknown>;
-  for (const field of ["minimumYears", "proficiency", "location", "arrangement"]) {
-    if (normalized[field] === null) {
-      delete normalized[field];
-    }
-  }
-
-  return normalized;
 }
 
 const baseProperties = {

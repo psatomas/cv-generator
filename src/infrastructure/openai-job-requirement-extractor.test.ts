@@ -68,11 +68,7 @@ test("uses Responses structured output with the default model and returns untrus
 
   const output = await extractor.extract({ text: "Build backend services." });
 
-  assert.deepEqual(output, [
-    ...candidates.slice(0, 6),
-    { type: "language", text: "English", preference: "required", priority: "medium", language: "English" },
-    candidates[7],
-  ]);
+  assert.deepEqual(output, candidates);
   assert.equal(client.requests.length, 1);
   const request = client.requests[0];
   assert.equal(request.model, defaultOpenAIJobRequirementExtractionModel);
@@ -83,6 +79,7 @@ test("uses Responses structured output with the default model and returns untrus
   assert.equal(format.strict, true);
   assert.equal(format.name, "job_requirement_extraction");
   assert.equal("id" in (output as Record<string, unknown>[])[0], false);
+  assert.equal((output as Record<string, unknown>[])[6].proficiency, null);
 });
 
 test("uses an explicit model override", async () => {
