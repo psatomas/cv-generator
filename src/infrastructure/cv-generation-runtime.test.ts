@@ -3,7 +3,9 @@ import test from "node:test";
 
 import Database from "better-sqlite3";
 
+import { saveCandidateProfile } from "../application/candidate-profile-repository.ts";
 import { CvCompositionValidationError } from "../application/cv-composition.ts";
+import { CandidateProfileRequiredError } from "../application/one-page-cv-generation.ts";
 import { parseCandidateEvidence } from "../domain/candidate-evidence.ts";
 import {
   defaultOpenAICvCompositionModel,
@@ -20,6 +22,7 @@ import {
   type OpenAIResponsesClient,
 } from "./openai-job-requirement-extractor.ts";
 import { SqliteCandidateEvidenceRepository } from "./sqlite-candidate-evidence-repository.ts";
+import { SqliteCandidateProfileRepository } from "./sqlite-candidate-profile-repository.ts";
 
 type Request = Parameters<OpenAIResponsesClient["responses"]["create"]>[0];
 
@@ -71,6 +74,14 @@ async function saveEvidence(database: Database.Database): Promise<void> {
     technologies: ["TypeScript"],
     highlights: ["Implemented an unrelated project."],
   }));
+}
+
+async function saveProfile(database: Database.Database): Promise<void> {
+  await saveCandidateProfile(new SqliteCandidateProfileRepository(database), {
+    fullName: "Alex Example",
+    professionalTitle: "Protocol Engineer",
+    location: "Recife, Brazil",
+  });
 }
 
 test("wires real SQLite storage and both OpenAI adapters into the canonical workflow", async () => {
@@ -143,6 +154,98 @@ test("forwards independent model overrides and leaves workflow failures unchange
   database.close();
 });
 
+test("wires persisted profile, evidence, and OpenAI adapters into final one-page generation", async () => {
+  const database = new Database(":memory:");
+  await saveProfile(database);
+  await saveEvidence(database);
+  const client = new FakeOpenAIClient([
+    completedResponse({
+      requirements: [
+        { type: "skill", text: "TypeScript", preference: "required", priority: "high", name: "TypeScript" },
+      ],
+    }),
+    completedResponse({
+      summary: { text: "TypeScript", claimIds: ["claim_skill_001"] },
+      entries: [{ kind: "skill", text: "TypeScript", claimIds: ["claim_skill_001"] }],
+    }),
+  ]);
+  const runtime = createCvGenerationRuntime({
+    database,
+    openAIClient: client,
+    requirementModel: "requirements-test-model",
+    compositionModel: "composition-test-model",
+  });
+
+  const result = await runtime.generateOnePage({ text: "Need TypeScript." });
+
+  assert.equal(result.profile.fullName, "Alex Example");
+  assert.equal(result.evidence.all()[0].id, "evidence_skill_typescript");
+  assert.equal(result.requirements.all()[0].id, "requirement_skill_001");
+  assert.equal(result.matches.all()[0].outcome, "supported");
+  assert.equal(result.claims.all()[0].id, "claim_skill_001");
+  assert.equal(result.composition.summary?.claimIds[0], "claim_skill_001");
+  assert.deepEqual(result.document, {
+    header: {
+      fullName: "Alex Example",
+      professionalTitle: "Protocol Engineer",
+      location: "Recife, Brazil",
+    },
+    summary: "TypeScript",
+    sections: [{ kind: "skills", title: "Skills", entries: ["TypeScript"] }],
+  });
+  const document = JSON.stringify(result.document);
+  assert.equal(document.includes("claimIds"), false);
+  assert.equal(document.includes("evidence_"), false);
+  assert.equal(document.includes("requirement_"), false);
+  assert.equal(client.requests[0].model, "requirements-test-model");
+  assert.equal(client.requests[1].model, "composition-test-model");
+  assert.equal((client.requests[1].input as string).includes("evidence_project_unrelated"), false);
+  database.close();
+});
+
+test("propagates a missing profile before any OpenAI request", async () => {
+  const database = new Database(":memory:");
+  await saveEvidence(database);
+  const client = new FakeOpenAIClient([]);
+  const runtime = createCvGenerationRuntime({ database, openAIClient: client });
+
+  await assert.rejects(
+    () => runtime.generateOnePage({ text: "Need TypeScript." }),
+    CandidateProfileRequiredError,
+  );
+  assert.deepEqual(client.requests, []);
+  database.close();
+});
+
+test("returns a profile header with an empty document body when no claims are supported", async () => {
+  const database = new Database(":memory:");
+  await saveProfile(database);
+  await saveEvidence(database);
+  const client = new FakeOpenAIClient([
+    completedResponse({
+      requirements: [
+        { type: "skill", text: "Rust", preference: "required", priority: "high", name: "Rust" },
+      ],
+    }),
+  ]);
+  const runtime = createCvGenerationRuntime({ database, openAIClient: client });
+
+  const result = await runtime.generateOnePage({ text: "Need Rust." });
+
+  assert.deepEqual(result.composition, { summary: null, entries: [] });
+  assert.deepEqual(result.document, {
+    header: {
+      fullName: "Alex Example",
+      professionalTitle: "Protocol Engineer",
+      location: "Recife, Brazil",
+    },
+    summary: null,
+    sections: [],
+  });
+  assert.equal(client.requests.length, 1);
+  database.close();
+});
+
 test("validates environment configuration and owns only its helper-created database", () => {
   assert.throws(
     () => createCvGenerationRuntimeFromEnvironment({ apiKey: "key", environment: {} }),
@@ -164,5 +267,6 @@ test("validates environment configuration and owns only its helper-created datab
     },
   });
   assert.equal(typeof runtime.generate, "function");
+  assert.equal(typeof runtime.generateOnePage, "function");
   runtime.close();
 });
