@@ -5,6 +5,10 @@ import {
   generateCvForJob,
   type CvGenerationResult,
 } from "../application/cv-generation.ts";
+import {
+  generateOnePageCvForJob,
+  type OnePageCvGenerationResult,
+} from "../application/one-page-cv-generation.ts";
 import { type JobDescription } from "../application/job-requirement-extraction.ts";
 import {
   OpenAICvComposer,
@@ -15,6 +19,7 @@ import {
   type OpenAIResponsesClient,
 } from "./openai-job-requirement-extractor.ts";
 import { SqliteCandidateEvidenceRepository } from "./sqlite-candidate-evidence-repository.ts";
+import { SqliteCandidateProfileRepository } from "./sqlite-candidate-profile-repository.ts";
 
 export type CvGenerationOpenAIResponsesClient =
   & OpenAIResponsesClient
@@ -30,6 +35,7 @@ export type CreateCvGenerationRuntimeConfig = {
 
 export type CvGenerationRuntime = Readonly<{
   generate(jobDescription: JobDescription): Promise<CvGenerationResult>;
+  generateOnePage(jobDescription: JobDescription): Promise<OnePageCvGenerationResult>;
 }>;
 
 export type OwnedCvGenerationRuntime = CvGenerationRuntime & Readonly<{
@@ -63,6 +69,7 @@ export function createCvGenerationRuntime(
   config: CreateCvGenerationRuntimeConfig,
 ): CvGenerationRuntime {
   const evidenceRepository = new SqliteCandidateEvidenceRepository(config.database);
+  const profileRepository = new SqliteCandidateProfileRepository(config.database);
   const extractor = new OpenAIJobRequirementExtractor({
     client: config.openAIClient,
     model: config.requirementModel,
@@ -75,6 +82,13 @@ export function createCvGenerationRuntime(
   return Object.freeze({
     generate: (jobDescription) => generateCvForJob({
       jobDescription,
+      evidenceRepository,
+      extractor,
+      composer,
+    }),
+    generateOnePage: (jobDescription) => generateOnePageCvForJob({
+      jobDescription,
+      profileRepository,
       evidenceRepository,
       extractor,
       composer,
